@@ -3,7 +3,7 @@
  * It is an n-dimensional array of numbers, on which standard Linear Algebra applies.
  */
 export class Vector {
-    private dimension: number;
+    public readonly dimension: number;
     private elements: number[] = [];
 
     private constructor(inputArray: number[]) {
