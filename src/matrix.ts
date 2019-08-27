@@ -205,7 +205,7 @@ export class Matrix {
     }
 }
 
-export enum MatrixOperations {
+enum MatrixOperations {
     Addition,
     Subtraction,
     Multiplication
