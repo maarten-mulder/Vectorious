@@ -1,4 +1,3 @@
-
 /** The Vector object represents a mathematical vector. 
  * It is an n-dimensional array of numbers, on which standard Linear Algebra applies.
  */
@@ -11,6 +10,10 @@ export class Vector {
         this.dimension = inputArray.length;
     }
 
+    /**
+     * Creates a Vector object based on the input number array. Returns null on invalid input.
+     * @param inputArray The input array to create a Vector object from.
+     */
     static fromArray(inputArray: number[]) : Vector {
         if(inputArray == null || inputArray.length === 0) {
             return null;
@@ -26,7 +29,7 @@ export class Vector {
         return isNull ? null : new Vector(inputArray);
     }
 
-    /** Calculates the sum of the current Vector and the input Vector, and returns the resulting Vector.
+    /** Calculates the sum of the current Vector and the input Vector, and returns the resulting Vector. Returns null on invalid input. 
      * @param {Vector} inputVector The Vector to add to the current Vector.
      */
     add(inputVector: Vector) : Vector {
@@ -40,7 +43,7 @@ export class Vector {
         return this;
     }
 
-    /** Calculates the difference Vector, by subtracting the input Vector from the urrent Vector.
+    /** Calculates the difference Vector, by subtracting the input Vector from the current Vector. Returns null on invalid input.
      * @param {Vector} inputVector The Vector to subtract from the current Vector.
      */
     subtract(inputVector: Vector) : Vector {
@@ -54,6 +57,10 @@ export class Vector {
         return this;
     }
     
+    /**
+     * Multiplies each element of this Vector with the input scale factor. Returns null on invalid input.
+     * @param scaleFactor The scale factor to multiply each element with.
+     */
     scale(scaleFactor: number) : Vector {
         if(scaleFactor == null) {
             return null;
@@ -62,6 +69,10 @@ export class Vector {
         return this;
     }
 
+    /**
+     * Calculates the dot product of the current Vector with the input Vector. Returns null on invalid input.
+     * @param inputVector The input Vector to calculate the dot product with.
+     */
     dotProduct(inputVector: Vector) : number {
         if(!this.validateInput(inputVector)) {
             return null;
@@ -72,6 +83,9 @@ export class Vector {
         return sum;
     }
 
+    /**
+     * Returns the elements of this Vector object as a number array.
+     */
     getElements() : number[] {
         return this.elements;
     }

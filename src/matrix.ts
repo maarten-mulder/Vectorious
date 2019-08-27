@@ -14,6 +14,10 @@ export class Matrix {
         this.nDimension = inputArray[0].length;
     }
 
+    /**
+     * Creates a Matrix object with the input number arrays. Returns null on invalid input.
+     * @param inputArrays The arrays to create a Matrix object from.
+     */
     static fromArrays(inputArrays: number[][]) : Matrix {
         if(inputArrays == null || inputArrays.length <= 1) {
             return null;
@@ -39,6 +43,10 @@ export class Matrix {
         return error ? null : new Matrix(inputArrays);
     }
 
+    /**
+     * Creates a Matrix object from an array of Vectors. Returns null on invalid input.
+     * @param inputVectors The array of Vectors to create a Matrix object from.
+     */
     static fromVectors(inputVectors: Vector[]) : Matrix {
         if(inputVectors == null || inputVectors.length === 0) {
             return null;
@@ -59,7 +67,7 @@ export class Matrix {
         return error ? null : new Matrix(arrays);
     }
 
-    /** Calculates the sum of the current Matrix and the input Matrix, and returns the resulting Matrix.
+    /** Calculates the sum of the current Matrix and the input Matrix, and returns the resulting Matrix. Returns null on invalid input.
      * @param {Matrix} inputMatrix The Matrix to add to the current Matrix.
      */
     add(inputMatrix: Matrix) : Matrix {
@@ -75,7 +83,7 @@ export class Matrix {
         return this;
     }
 
-    /** Calculates the difference Matrix, by subtracting the input Matrix from the urrent Matrix.
+    /** Calculates the difference Matrix, by subtracting the input Matrix from the current Matrix. Returns null on invalid input.
      * @param {Matrix} inputMatrix The Matrix to subtract from the current Matrix.
      */
     subtract(inputMatrix: Matrix) : Matrix {
@@ -92,6 +100,10 @@ export class Matrix {
         return this;
     }
     
+    /**
+     * Multiplies each element of this matrix with the input scale factor. Returns null on invalid input.
+     * @param scaleFactor The scale factor to multiply each element with.
+     */
     scale(scaleFactor: number) : Matrix {
         if(scaleFactor == null) {
             return null;
@@ -101,6 +113,10 @@ export class Matrix {
         return this;
     }
 
+    /**
+     * Multiplies the current Matrix with the input Vector. Returns null on invalid input, or if there is a dimension mismatch.
+     * @param inputVector The Vector to multiply with.
+     */
     multiplyWithVector(inputVector: Vector) : Vector {
         if(inputVector == null || inputVector.dimension !== this.nDimension) {
             return null;
@@ -118,6 +134,10 @@ export class Matrix {
         return Vector.fromArray(newArray);
     }
 
+    /**
+     * Multiplies the current Matrix with the input Matrix. Returns null on invalid input, or if there is a dimension mismatch.
+     * @param inputMatrix The Matrix to multiply with.
+     */
     multiplyWithMatrix(inputMatrix: Matrix) : Matrix {
         if(!this.validateInput(inputMatrix, MatrixOperations.Multiplication)) {
             return null;
@@ -138,8 +158,35 @@ export class Matrix {
         return Matrix.fromArrays(newMatrix);
     }
 
+    /**
+     * Returns the elements of this Matrix object as a multidimensional array.
+     */
     getElements() : number[][] {
         return this.elements;
+    }
+
+    /**
+     * Returns a square n x n Identity Matrix based on the input number of dimensions. Returns null on invalid input.
+     * @param dimensions The number of columns and rows the Identity Matrix should have. Must be greater than 1.
+     */
+    static identity(dimensions: number): Matrix {
+        if(dimensions == null || dimensions < 2) {
+            return null;
+        }
+
+        let arrays: number[][] = [];
+        for (let i = 0; i < dimensions; i++) {
+            let array: number[] = [];
+            for (let j = 0; j < dimensions; j++) {
+                if(i === j) {
+                    array.push(1);
+                } else {
+                array.push(0);
+                }
+            }
+            arrays.push(array);
+        }
+        return new Matrix(arrays);
     }
 
     /** Validates if the input Matrix is compatible with the current Matrix for the specified operation. */

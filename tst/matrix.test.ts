@@ -6,8 +6,6 @@ import { Matrix } from "../src/matrix";
 let validMatrix: number[][];
 let validArray: number[];
 
-///Constructor Tests'
-
  beforeEach(() => {
     validMatrix = [[1, 2], [3, 4]];
     validArray = [10, 20];
@@ -192,5 +190,25 @@ describe('Matrix', () => {
         let product = matrix.multiplyWithMatrix(validMatrix);
 
         expect(product.getElements()).to.eql([[220, 280], [490, 640]]);
+    });
+});
+
+describe('Matrix', () => {
+    it('identity', () => {
+        let dimensions;
+        expect(Matrix.identity(dimensions)).to.be.null;
+
+        dimensions = 1;
+        expect(Matrix.identity(dimensions)).to.be.null;
+        
+        dimensions = 2;
+        expect(Matrix.identity(dimensions).getElements()).to.eql([[1, 0], [0, 1]]);
+        
+        dimensions = 3;
+        expect(Matrix.identity(dimensions).getElements()).to.eql([[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+
+        let matrix: Matrix = Matrix.identity(3);
+
+        expect(matrix.getElements()).to.eql(matrix.multiplyWithMatrix(matrix).multiplyWithMatrix(matrix).getElements());
     });
 });
