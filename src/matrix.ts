@@ -9,7 +9,7 @@ export class Matrix {
     private elements: number[][];
 
     private constructor(inputArray: number[][]) {
-        this.elements = inputArray;
+        this.elements = JSON.parse(JSON.stringify(inputArray));
         this.mDimension = inputArray.length;
         this.nDimension = inputArray[0].length;
     }
@@ -92,17 +92,25 @@ export class Matrix {
         return this;
     }
     
+    scale(scaleFactor: number) : Matrix {
+        if(scaleFactor == null) {
+            return null;
+        }
+
+        this.elements = this.elements.map(element => { return element.map(element => { return scaleFactor * element })})
+        return this;
+    }
 
     multiplyWithVector(inputVector: Vector) : Vector {
         if(inputVector == null || inputVector.dimension !== this.nDimension) {
             return null;
         }
 
-        let newArray: number[];
+        let newArray: number[] = [];
         for (let i = 0; i < this.mDimension; i++) {
             let sum = 0;
             this.elements[i].map((element, index) => {
-                sum += element * inputVector[index];
+                sum += element * inputVector.getElements()[index];
             });
             newArray.push(sum);
         }
@@ -115,16 +123,19 @@ export class Matrix {
             return null;
         }
 
-        let newArray: number[];
+        let newMatrix: number[][] = [];
         for (let i = 0; i < this.mDimension; i++) {
-            for(let j = 0; j < this.nDimension; j++) {
+            let newArray: number[] = [];
+            for(let j = 0; j < inputMatrix.nDimension; j++) {
                 let sum = 0;
                 this.elements[i].map((element, index) => {
-                    sum += element * inputMatrix[index][j];
+                    sum += element * inputMatrix.getElements()[index][j];
                 });
                 newArray.push(sum);
             }
+            newMatrix.push(newArray);
         }
+        return Matrix.fromArrays(newMatrix);
     }
 
     getElements() : number[][] {
@@ -140,11 +151,9 @@ export class Matrix {
         switch (operation) {
             case MatrixOperations.Addition:
             case MatrixOperations.Subtraction:
-                return matrix.mDimension == this.mDimension && matrix.nDimension == this.nDimension;
+                return matrix.mDimension === this.mDimension && matrix.nDimension === this.nDimension;
             case MatrixOperations.Multiplication:
-                return matrix.nDimension == matrix.nDimension;
-            default:
-                return false;
+                return this.mDimension === matrix.nDimension;
         }
     }
 }

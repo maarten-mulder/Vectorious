@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { Vector } from "../src/vector";
 import { beforeEach } from "mocha";
 
-let validArray;
-let validLargeArray;
-let nullArray;
-let invalidArray;
-let anotherInvalidArray;
+let validArray: number[];
+let validLargeArray: number[];
+let nullArray: number[];
+let invalidArray: number[];
+let anotherInvalidArray: number[];
 
 ///Constructor Tests'
 
@@ -21,7 +21,7 @@ beforeEach(() => {
 describe('Vector', () => {
   it('createWithValidArray', () => {
     let vector = Vector.fromArray(validArray);
-    expect(vector.getElements()).to.be.equal(validArray);
+    expect(vector.getElements()).to.eql(validArray);
   });
 });
 
@@ -66,18 +66,19 @@ describe('Vector', () => {
 describe('Vector', () => {
   it('addTest', () => {
     let vector = Vector.fromArray(validArray);
-    validArray.map(element => { 2 * element });
+    validArray = validArray.map(element => { return 2 * element });
     let result = vector.add(vector);
-    expect(result.getElements()).to.be.equal(validArray);
+    expect(result.getElements()).to.eql(validArray);
   });
 });
 
 describe('Vector', () => {
   it('sequenceAddTest', () => {
     let vector = Vector.fromArray(validArray);
-    validArray.map(element => { 4 * element });
-    let result = vector.add(vector).add(vector).add(vector);
-    expect(result.getElements()).to.be.equal(validArray);
+    let vectoToAdd = Vector.fromArray(validArray);
+    validArray = validArray.map(element => { return 4 * element });
+    let result = vector.add(vectoToAdd).add(vectoToAdd).add(vectoToAdd);
+    expect(result.getElements()).to.eql(validArray);
   });
 });
 
@@ -89,29 +90,47 @@ describe('Vector', () => {
 
 
     vector = Vector.fromArray(validArray);
-    validArray.map(() => { 0 });
+    validArray = validArray.map(() => { return 0 });
     let correctResult = vector.subtract(vector);
-    expect(correctResult.getElements()).to.be.equal(validArray);
+    expect(correctResult.getElements()).to.eql(validArray);
   });
 });
 
 describe('Vector', () => {
   it('sequenceSubtractTest', () => {
     let vector = Vector.fromArray(validArray);
-    validArray.map(element => { -2 * element });
-    let result = vector.subtract(vector).subtract(vector).subtract(vector);
-    expect(result.getElements()).to.be.equal(validArray);
+    let vectoToSubtract = Vector.fromArray(validArray);
+    validArray = validArray.map(element => { return -2 * element });
+
+    let result = vector.subtract(vectoToSubtract).subtract(vectoToSubtract).subtract(vectoToSubtract);
+
+    expect(result.getElements()).to.eql(validArray);
   });
 });
 
 describe('Vector', () => {
-  it('dotProductTest', () => {    
+  it('scaleTest', () => {
+    let vector = Vector.fromArray(validArray);
+    let scaleFactor;
+
+    let result = vector.scale(scaleFactor);
+    expect(result).to.be.null;
+
+    scaleFactor = -3;
+
+    result = vector.scale(scaleFactor);
+    expect(result.getElements()).to.eql([-3, -6, -9]);
+  });
+});
+
+describe('Vector', () => {
+  it('dotProductTest', () => {
     let vector = Vector.fromArray(validArray);
     let result = vector.dotProduct(null);
     expect(result).to.be.null;
 
     vector = Vector.fromArray(validArray);
     let correctResult = vector.dotProduct(vector);
-    expect(correctResult).to.be.equal(1 + 4 + 9);
+    expect(correctResult).to.eql(1 + 4 + 9);
   });
 });

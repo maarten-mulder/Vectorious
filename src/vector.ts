@@ -7,7 +7,7 @@ export class Vector {
     private elements: number[] = [];
 
     private constructor(inputArray: number[]) {
-        this.elements = inputArray;
+        this.elements = JSON.parse(JSON.stringify(inputArray));
         this.dimension = inputArray.length;
     }
 
@@ -54,6 +54,13 @@ export class Vector {
         return this;
     }
     
+    scale(scaleFactor: number) : Vector {
+        if(scaleFactor == null) {
+            return null;
+        }
+        this.elements = this.elements.map(element => { return scaleFactor * element})
+        return this;
+    }
 
     dotProduct(inputVector: Vector) : number {
         if(!this.validateInput(inputVector)) {
@@ -68,6 +75,7 @@ export class Vector {
     getElements() : number[] {
         return this.elements;
     }
+
 
     /** Validates if the input vector is compatible with the current Vector. */
     private validateInput(vector: Vector) {
